@@ -2,6 +2,8 @@ Spree::Order.state_machine.before_transition :to => :payment, :do => :valid_time
 
 module Spree
   Order.class_eval do
+    include Spree::DeliveryTimeControllerHelper
+
     def time_high(time_sym)
       return unless [:pickup, :dropoff].include?(time_sym)
       (send(time_sym) + 1.hour).strftime("%H:%M")
@@ -15,6 +17,16 @@ module Spree
     def date_str(time_sym)
       return unless [:pickup, :dropoff].include?(time_sym)
       send(time_sym).strftime("%a, %d %b %Y")
+    end
+
+    def date(time_sym)
+      return unless [:pickup, :dropoff].include?(time_sym)
+      send(time_sym).strftime("%Y-%m-%d")
+    end
+
+    def time(time_sym)
+      return unless [:pickup, :dropoff].include?(time_sym)
+      send(time_sym).strftime("%H:%M:%S")
     end
 
     def delivery_time_str(time_sym)
