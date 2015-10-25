@@ -25,4 +25,3 @@ Deface::Override.new(:virtual_path => 'spree/checkout/_delivery',
         </select>
       </p>"
   )
-# <input class='form-control' type='time' min = '09:00:00' max='20:00:00' step='01:00:00' value='#{Time.zone.now.hour}:00:00' name='order[dropoff_time]' id='order_dropoff_time'>

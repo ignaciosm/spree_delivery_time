@@ -1,5 +1,6 @@
 module Spree
   CheckoutController.class_eval do
+    # include Admin::DeliveryTimeControllerHelper
 
     before_action :permit_new_attributes
     before_action :clean_delivery_time_params
@@ -105,10 +106,11 @@ module Spree
       Time.zone = SpreeDeliveryTime::Config::TIME_ZONE
     end
 
+    # TODO: Extract these into a helper module
     def time_open
       @time_open ||= Time.zone.parse(SpreeDeliveryTime::Config::TIME_OPEN)
     end
-
+    
     def time_close
       @time_close ||= Time.zone.parse(SpreeDeliveryTime::Config::TIME_CLOSE)
     end

@@ -2,4 +2,13 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  pickup:
+  dropoff: "%{pickup_date}"
+  shipment_mailer:
+    shipped_email:
+      pickup: "Pickup is %{pickup_date} between %{pickup_low} and %{pickup_high}"
+      dropoff: "Dropoff is %{dropoff_date} between %{dropoff_low} and %{dropoff_high}"
+  order_mailer:
+    confirm_email:
+      pickup: "Pickup is %{pickup_date} between %{pickup_low} and %{pickup_high}"
+      dropoff: "Dropoff is %{dropoff_date} between %{dropoff_low} and %{dropoff_high}"
