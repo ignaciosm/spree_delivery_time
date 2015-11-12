@@ -68,7 +68,6 @@ module Spree
       # Is pickup and dropoff time during operating hours?
       elsif (pickup.hour < time_open.hour || pickup.hour > time_close.hour || dropoff.hour < time_open.hour || dropoff.hour > time_close.hour)
         errors.add(:delivery_time, "must be during our business hours: #{time_open.strftime('%T')} - #{time_close.strftime('%T')}")
-        binding.pry
         return false
       # TODO: This cannot be validated unless pickup time can be compared to the time the order was placed, not further updates
       # Is pickup time at least min necessary hours from order time? Allow for 30min window to place order.
@@ -78,7 +77,6 @@ module Spree
       # Is dropoff time at least min necessary hours from pickup time? Allow for 30min window to place order.
       elsif (dropoff < (pickup + min_hours_from_pickup_to_delivery.hours))
         errors.add(:dropoff_time, "must be at least #{min_hours_from_pickup_to_delivery} hours from pickup time.")
-        binding.pry
         return false
       end
     end
