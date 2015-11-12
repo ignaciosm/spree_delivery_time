@@ -55,8 +55,6 @@ module Spree
 
     def valid_time?
       set_time_zone
-      # time_updated = Time.zone.parse(updated_at.to_s)
-
       # Is both pickup and dropoff time present?
       if (dropoff.nil? || pickup.nil?)
         errors.add(:delivery_time, 'must be specified')
@@ -69,16 +67,14 @@ module Spree
       elsif (pickup.hour < time_open.hour || pickup.hour > time_close.hour || dropoff.hour < time_open.hour || dropoff.hour > time_close.hour)
         errors.add(:delivery_time, "must be during our business hours: #{time_open.strftime('%T')} - #{time_close.strftime('%T')}")
         return false
-      # TODO: This cannot be validated unless pickup time can be compared to the time the order was placed, not further updates
+      # TODO: This cannot be validated unless pickup time can be compared to the time the order was placed, not later updates
       # Is pickup time at least min necessary hours from order time? Allow for 30min window to place order.
-      # elsif (pickup < (time_updated + min_hours_from_order_to_pickup.hours + 30.minutes))
-      #   errors.add(:pickup_time, "must be at least #{min_hours_from_order_to_pickup} hours from time last update.")
-      #   return false
-      # Is dropoff time at least min necessary hours from pickup time? Allow for 30min window to place order.
+      # Is dropoff time at least min necessary hours from pickup time?
       elsif (dropoff < (pickup + min_hours_from_pickup_to_delivery.hours))
         errors.add(:dropoff_time, "must be at least #{min_hours_from_pickup_to_delivery} hours from pickup time.")
         return false
       end
+      true
     end
   end
 end
