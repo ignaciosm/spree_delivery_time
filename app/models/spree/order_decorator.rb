@@ -2,6 +2,8 @@ Spree::Order.state_machine.before_transition :to => :payment, :do => :valid_time
 
 module Spree
   Order.class_eval do
+    include DeliveryTimeControllerHelper
+
     def time_high(time_sym)
       return unless [:pickup, :dropoff].include?(time_sym)
       (send(time_sym) + 1.hour).strftime("%H:%M")
@@ -20,35 +22,6 @@ module Spree
     def delivery_time_str(time_sym)
       return unless [:pickup, :dropoff].include?(time_sym)
       return "#{date_str(time_sym)} #{time_low(time_sym)}"
-    end
-
-    # TODO: Extract these into a helper module
-    def set_time_zone
-      Time.zone = SpreeDeliveryTime::Config::TIME_ZONE || 'UTC'
-    end
-
-    def time_open
-      @time_open ||= Time.zone.parse(SpreeDeliveryTime::Config::TIME_OPEN)
-    end
-    
-    def time_close
-      @time_close ||= Time.zone.parse(SpreeDeliveryTime::Config::TIME_CLOSE)
-    end
-
-    def min_hours_from_order_to_pickup
-      @min_hours_from_order_to_pickup ||= SpreeDeliveryTime::Config::HOURS_FROM_ORDER_TO_PICKUP.to_i
-    end
-
-    def min_hours_from_pickup_to_delivery
-      @min_hours_from_pickup_to_delivery ||= SpreeDeliveryTime::Config::HOURS_FROM_PICKUP_TO_DELIVERY.to_i
-    end
-
-    def max_days_to_pickup
-      @max_days_to_pickup ||= SpreeDeliveryTime::Config::MAX_DAYS_TO_PICKUP.to_i
-    end
-
-    def max_days_to_delivery
-      @max_days_to_delivery ||= SpreeDeliveryTime::Config::MAX_DAYS_TO_DELIVERY.to_i
     end
 
     private
