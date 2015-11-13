@@ -7,6 +7,7 @@ module Spree
     before_action :set_delivery_times
 
      def update
+      raise
       if @order.update_from_params(params, @new_permitted_checkout_attributes, request.headers.env)
         @order.temporary_address = !params[:save_user_address]
         unless @order.next
@@ -28,6 +29,7 @@ module Spree
     end
 
     def permit_new_attributes
+      byebug
       @new_permitted_checkout_attributes = permitted_checkout_attributes + [:pickup, :dropoff]
     end
   end

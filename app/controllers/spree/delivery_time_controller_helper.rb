@@ -1,5 +1,4 @@
 module Spree
-  # module Admin
   module DeliveryTimeControllerHelper
     def clean_delivery_time_params
       pickup_time = params["order"].try(:delete, :pickup_time)
@@ -74,11 +73,10 @@ module Spree
       Time.zone = SpreeDeliveryTime::Config::TIME_ZONE
     end
 
-    # TODO: Extract these into a helper module
     def time_open
       @time_open ||= Time.zone.parse(SpreeDeliveryTime::Config::TIME_OPEN)
     end
-    
+
     def time_close
       @time_close ||= Time.zone.parse(SpreeDeliveryTime::Config::TIME_CLOSE)
     end
