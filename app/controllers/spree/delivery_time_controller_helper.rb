@@ -97,5 +97,4 @@ module Spree
       @max_days_to_delivery ||= SpreeDeliveryTime::Config::MAX_DAYS_TO_DELIVERY.to_i
     end
   end
-  # end
 end

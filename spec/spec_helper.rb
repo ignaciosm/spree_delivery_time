@@ -1,5 +1,10 @@
 # Run Coverage report
 require 'simplecov'
+
+def time_to_str(time)
+  time.strftime("%Y-%m-%d %H:%M:%S")
+end
+
 SimpleCov.start do
   add_filter 'spec/dummy'
   add_group 'Controllers', 'app/controllers'
