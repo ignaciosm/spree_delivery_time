@@ -18,8 +18,8 @@ module Spree
       set_soonest_pickup_date
       set_soonest_dropoff_date
       set_valid_pickup_dropoff_times
-      set_latest_pickup_date
-      set_latest_dropoff_date
+      # set_latest_pickup_date
+      # set_latest_dropoff_date
     end
 
     def set_selected_pickup_times
@@ -50,11 +50,11 @@ module Spree
       @soonest_pickup
     end
 
-    def set_latest_pickup_date
-      @latest_pickup ||= set_soonest_pickup_date + max_days_to_pickup.days
-      @latest_pickup_date ||= @latest_pickup.strftime('%Y-%m-%d')
-      @latest_pickup
-    end
+    # def set_latest_pickup_date
+    #   @latest_pickup ||= set_soonest_pickup_date + max_days_to_pickup.days
+    #   @latest_pickup_date ||= @latest_pickup.strftime('%Y-%m-%d')
+    #   @latest_pickup
+    # end
 
     def set_soonest_dropoff_date
       @soonest_dropoff ||= set_soonest_pickup_date + min_hours_from_pickup_to_delivery.hours
@@ -63,11 +63,11 @@ module Spree
       @soonest_dropoff
     end
 
-    def set_latest_dropoff_date
-      @latest_dropoff ||= set_latest_pickup_date + max_days_to_delivery
-      @latest_dropoff_date ||= @latest_dropoff.strftime('%Y-%m-%d')
-      @latest_dropoff
-    end
+    # def set_latest_dropoff_date
+    #   @latest_dropoff ||= set_latest_pickup_date + max_days_to_delivery
+    #   @latest_dropoff_date ||= @latest_dropoff.strftime('%Y-%m-%d')
+    #   @latest_dropoff
+    # end
 
     def set_time_zone
       Time.zone = SpreeDeliveryTime::Config::TIME_ZONE
@@ -89,12 +89,12 @@ module Spree
       @min_hours_from_pickup_to_delivery ||= SpreeDeliveryTime::Config::HOURS_FROM_PICKUP_TO_DELIVERY.to_i
     end
 
-    def max_days_to_pickup
-      @max_days_to_pickup ||= SpreeDeliveryTime::Config::MAX_DAYS_TO_PICKUP.to_i
-    end
+    # def max_days_to_pickup
+    #   @max_days_to_pickup ||= SpreeDeliveryTime::Config::MAX_DAYS_TO_PICKUP.to_i
+    # end
 
-    def max_days_to_delivery
-      @max_days_to_delivery ||= SpreeDeliveryTime::Config::MAX_DAYS_TO_DELIVERY.to_i
-    end
+    # def max_days_to_delivery
+    #   @max_days_to_delivery ||= SpreeDeliveryTime::Config::MAX_DAYS_TO_DELIVERY.to_i
+    # end
   end
 end

@@ -32,6 +32,7 @@ Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each { |f| require f }
 require 'spree/testing_support/authorization_helpers'
 require 'spree/testing_support/capybara_ext'
 require 'spree/testing_support/controller_requests'
+require 'spree/testing_support/order_walkthrough'
 require 'spree/testing_support/factories'
 require 'spree/testing_support/url_helpers'
 
@@ -51,7 +52,10 @@ RSpec.configure do |config|
   # visit spree.admin_path
   # current_path.should eql(spree.products_path)
   config.include Spree::TestingSupport::UrlHelpers
+
   config.include Spree::TestingSupport::ControllerRequests, :type => :controller
+  # Include Capybara integration testing
+  config.include Capybara::DSL
 
   # == Mock Framework
   #

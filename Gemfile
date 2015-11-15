@@ -8,4 +8,8 @@ group :development, :test do
   gem 'byebug'
 end
 
+group :test do
+  gem 'launchy'
+end
+
 gemspec

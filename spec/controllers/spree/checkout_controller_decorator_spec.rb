@@ -41,7 +41,6 @@ module Spree
       it 'raises an error when delivery time is not provided' do
         order_params = {'pickup'=>'2015-11-20 14:00:00 -0500', 'dropoff'=>''}
         spree_post :update, state: 'delivery', order: order_params
-        byebug
         expect(order.pickup).to eq('2015-11-20 14:00:00 -0500')
       end
 

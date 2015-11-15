@@ -11,6 +11,16 @@ describe Spree::Order do
       @order.update_attributes(pickup: time_to_str(Time.zone.parse('09:00')))
     end
 
+    context 'when delivery time is not being updated' do
+      it 'does not validate delivery time' do
+        expect(@order).to_not receive(:pickup)
+        expect(@order).to_not receive(:dropoff)
+        expect(@order).to_not receive(:delivery_time_provided?)
+        @order.update_attributes(special_instructions: 'hello')
+        expect(@order.special_instructions).to eq('hello')
+      end
+    end
+
     context 'when delivery times are not set' do
       it 'returns false and errors when dropoff time is nil' do
         @order.update(pickup: Time.zone.parse('09:00:00'))
@@ -22,6 +32,7 @@ describe Spree::Order do
         expect(@order.errors.messages[:order]).to include("must have pickup and dropoff time in the form of 'YYYY-MM-DD HH:MM:SS'")
       end
     end
+
 
     context 'when delivery time is in an invalid format' do
       it 'returns false and errors when pickup month is an invalid month' do
@@ -96,14 +107,27 @@ describe Spree::Order do
         @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
         expect(@order.errors.messages[:dropoff_time]).to include("must be at least #{@order.min_hours_from_pickup_to_delivery} hours from pickup time.")
       end
-    end
 
-    context 'when delivery time is valid' do
-      it 'returns true when pickup time and dropoff time are valid' do
-        pickup_time = @order.time_open
-        dropoff_time = pickup_time + @order.min_hours_from_pickup_to_delivery.hours
-        @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
-        expect(@order.errors.messages).to be_empty
+      context 'pickup time relative to current time' do
+        before do
+          Time.zone = SpreeDeliveryTime::Config::TIME_ZONE
+          test_time_now = Time.zone.parse('2000-03-23 09:10:00')
+          allow(Time.zone).to receive(:now).and_return(test_time_now)
+        end
+
+        it 'returns false and errors when pickup time is not at least the minimum configured time to pickup an order' do
+          pickup_time = '2000-03-22 09:00:00'
+          dropoff_time = '2000-03-23 09:00:00'
+          @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
+          expect(@order.errors.messages[:pickup_time]).to include("must be at least #{@order.min_hours_from_order_to_pickup} hours from now.")
+        end
+
+        it 'allows for a 30 minutes grace period to complete the order before pickup time is checked' do
+          pickup_time = '2000-03-23 17:00'
+          dropoff_time = '2000-03-24 18:00'
+          @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
+          expect(@order.errors.messages).to be_empty
+        end
       end
     end
   end
