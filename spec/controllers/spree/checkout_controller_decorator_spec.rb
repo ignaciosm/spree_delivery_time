@@ -52,9 +52,3 @@ module Spree
     end
   end
 end
-
-# describe Spree::ProductsController do
-#   it "can see all the products" do
-#     spree_get :index
-#   end
-# end
