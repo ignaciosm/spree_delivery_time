@@ -8,12 +8,12 @@ module Spree
       before_action :set_delivery_times, only: [:edit]
 
       def pickup
-        @order.update_attributes(pickup: pickup_params[:pickup])
+        @order.update_attribute(:pickup, pickup_params[:pickup])
         render json: @order
       end
 
       def dropoff
-        @order.update_attributes(dropoff: pickup_params[:dropoff])
+        @order.update_attribute(:dropoff, pickup_params[:dropoff])
         render json: @order
       end
 

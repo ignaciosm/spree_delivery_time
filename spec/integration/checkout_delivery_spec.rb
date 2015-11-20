@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Checkout", type: :feature do
+feature "Checkout", js: true do
 
   let(:token) { 'some_token' }
   let(:user) { create(:user) }
@@ -26,19 +26,31 @@ describe "Checkout", type: :feature do
       allow(Time.zone).to receive(:now).and_return(test_time_now)
     end
 
-    it 'sets the earliest pickup date to the current date' do
-      visit spree.checkout_state_path(:delivery)
-      # save_and_open_page
-      expect(find('#order_pickup_date').value).to eq('2000-03-23')
-      expect(page).to have_content('Pickup Date')
+    context 'when delivery time has not yet been set' do
+      it 'sets the earliest pickup date to the current date' do
+        visit spree.checkout_state_path(:delivery)
+        expect(find('#order_pickup_date').value).to eq('2000-03-23')
+      end
+
+      xit 'sets the pickup time to soonest possible pickup time', js: true do
+        visit spree.checkout_state_path(:delivery)
+        # save_and_open_page
+        # byebug
+        expect(find('#order_pickup_time').value).to eq('17:00:00')
+      end
+
+      it 'sets the dropoff date to the soonest possible dropoff date' do
+
+      end
+
+      it 'sets the dropoff time to the soonest possible dropoff time' do
+
+      end
     end
 
-    it 'sets the earliest pickup time to soonest time' do
-      visit spree.checkout_state_path(:delivery)
-      save_and_open_page
-      expect(page).to have_content('Pickup Date')
-    end
+    context 'when delivery time has already been set' do
 
+    end
 
   end
 

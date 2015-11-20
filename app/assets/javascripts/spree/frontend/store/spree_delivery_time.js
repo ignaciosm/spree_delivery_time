@@ -323,12 +323,14 @@
       setMinDropoffDate(soonestDropoffDateStr);
     }
 
-    // setFirstValidPickupTime();
-    // hideInvalidPickupTimes();
-    // setSoonestDropoffDate();
-    // setFirstValidDropoffTime();
-    // hideInvalidDropoffTimes();
-    // debugger
+
+    if ($('#order_pickup_time').length != 0) { 
+      setFirstValidPickupTime();
+      hideInvalidPickupTimes();
+      setSoonestDropoffDate();
+      setFirstValidDropoffTime();
+      hideInvalidDropoffTimes();
+    }
 
     $('#order_pickup_date').on('change', function(event) {
       var date_str = event.currentTarget.value;
