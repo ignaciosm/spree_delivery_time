@@ -325,10 +325,10 @@
 
 
     if ($('#order_pickup_time').length != 0) { 
-      setFirstValidPickupTime();
+      setPickupTimeIfInvalid(); // setFirstValidPickupTime();
       hideInvalidPickupTimes();
-      setSoonestDropoffDate();
-      setFirstValidDropoffTime();
+      setDropoffDateifInvalid(); // setSoonestDropoffDate();
+      setDropoffTimeIfInvalid(); // setFirstValidDropoffTime();
       hideInvalidDropoffTimes();
     }
 

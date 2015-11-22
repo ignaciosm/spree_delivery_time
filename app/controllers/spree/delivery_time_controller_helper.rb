@@ -24,6 +24,7 @@ module Spree
 
     def set_selected_pickup_times
       current_set_pickup_time = Time.zone.parse(@order.pickup.to_s)
+      @order.update_attribute(:pickup, nil) and return if current_set_pickup_time < soonest_pickup
       @selected_pickup_date = current_set_pickup_time.strftime('%Y-%m-%d')
       @selected_pickup_date_utc = current_set_pickup_time.utc.strftime('%Y-%m-%d')
       @selected_pickup_time = current_set_pickup_time.strftime('%T')
@@ -31,6 +32,7 @@ module Spree
 
     def set_selected_dropoff_times
       current_set_dropoff_time = Time.zone.parse(@order.dropoff.to_s)
+      @order.update_attribute(:dropoff, nil) and return if current_set_dropoff_time < soonest_dropoff
       @selected_dropoff_date = current_set_dropoff_time.strftime('%Y-%m-%d')
       @selected_dropoff_date_utc = current_set_dropoff_time.utc.strftime('%Y-%m-%d')
       @selected_dropoff_time = current_set_dropoff_time.strftime('%T')
@@ -41,7 +43,7 @@ module Spree
     end
 
     def set_soonest_pickup_date
-      @soonest_pickup ||= Time.zone.now + min_hours_from_order_to_pickup.hours
+      @soonest_pickup ||= soonest_pickup
       if @soonest_pickup > time_close && @soonest_pickup < (time_open + 1.day)
         @soonest_pickup = time_open + 1.day
       end
@@ -57,7 +59,7 @@ module Spree
     # end
 
     def set_soonest_dropoff_date
-      @soonest_dropoff ||= set_soonest_pickup_date + min_hours_from_pickup_to_delivery.hours
+      @soonest_dropoff ||= soonest_dropoff
       @soonest_dropoff_date ||= @soonest_dropoff.strftime('%Y-%m-%d')
       @soonest_dropoff_date_utc ||= @soonest_dropoff.utc.strftime('%Y-%m-%d')
       @soonest_dropoff
@@ -87,6 +89,16 @@ module Spree
 
     def min_hours_from_pickup_to_delivery
       @min_hours_from_pickup_to_delivery ||= SpreeDeliveryTime::Config::HOURS_FROM_PICKUP_TO_DELIVERY.to_i
+    end
+
+    private
+
+    def soonest_pickup
+      Time.zone.now + min_hours_from_order_to_pickup.hours
+    end
+
+    def soonest_dropoff
+      soonest_pickup + min_hours_from_pickup_to_delivery.hours
     end
 
     # def max_days_to_pickup
