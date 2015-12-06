@@ -44,6 +44,9 @@
 
     var setMinDropoffDate = function(date_str) {
       $('#order_dropoff_date').attr('min', date_str);
+      if (!Modernizr.inputtypes.date) {
+        $( '#order_dropoff_date').datepicker( "option", "minDate", toUtc(new Date($('#order_dropoff_date').attr('min'))) );
+      }
     }
 
     var firstValidPickupTime = function() {
@@ -269,7 +272,6 @@
     // Dropoff time is invalid if it is earlier than the soonest 
     // dropoff time in UTC.
     var isInvalidDropoffTime = function(time_str) {
-      // debugger;
       return setTimeStrToUtcDropoffDate(time_str) < soonestUtcDropoffTime(); 
     };
 
@@ -323,6 +325,11 @@
       setMinDropoffDate(soonestDropoffDateStr);
     }
 
+    if (!Modernizr.inputtypes.date) {
+      $('#order_pickup_date').datepicker({dateFormat: 'yy-mm-dd', minDate: new Date($('#order_pickup_date').attr('min'))});
+      $('#order_dropoff_date').datepicker({dateFormat: 'yy-mm-dd', minDate: new Date($('#order_dropoff_date').attr('min'))});
+    }
+
 
     if ($('#order_pickup_time').length != 0) { 
       setPickupTimeIfInvalid(); // setFirstValidPickupTime();
@@ -356,6 +363,7 @@
     });
 
     $('#order_dropoff_date').on('change', function(event) {
+      event.preventDefault();
       var date_str = event.currentTarget.value;
       var utc_date_str = getDropoffTime().toISOString().split('T')[0];
       setDropoffDate(date_str, utc_date_str);
