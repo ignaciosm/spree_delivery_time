@@ -326,8 +326,8 @@
     }
 
     if (!Modernizr.inputtypes.date) {
-      $('#order_pickup_date').datepicker({dateFormat: 'yy-mm-dd', minDate: new Date($('#order_pickup_date').attr('min'))});
-      $('#order_dropoff_date').datepicker({dateFormat: 'yy-mm-dd', minDate: new Date($('#order_dropoff_date').attr('min'))});
+      $('#order_pickup_date').datepicker({dateFormat: 'yy-mm-dd', minDate: toUtc(new Date($('#order_pickup_date').attr('min')))});
+      $('#order_dropoff_date').datepicker({dateFormat: 'yy-mm-dd', minDate: toUtc(new Date($('#order_dropoff_date').attr('min')))});
     }
 
 
