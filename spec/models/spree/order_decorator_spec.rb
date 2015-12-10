@@ -33,58 +33,6 @@ describe Spree::Order do
       end
     end
 
-
-    context 'when delivery time is in an invalid format' do
-      it 'returns false and errors when pickup month is an invalid month' do
-        pickup_time = "2015-13-01 09:00:00"
-        dropoff_time = "2015-12-01 09:00:00"
-        @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
-        expect(@order.errors.messages[:order]).to include("must have pickup and dropoff time in the form of 'YYYY-MM-DD HH:MM:SS'")
-      end
-
-      it 'returns false and errors when pickup time includes a date but no time' do
-        pickup_time = "2015-13-01"
-        dropoff_time = "2015-12-01 09:00:00"
-        @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
-        expect(@order.errors.messages[:order]).to include("must have pickup and dropoff time in the form of 'YYYY-MM-DD HH:MM:SS'")
-      end
-
-      it 'defaults to todays date when pickup time includes a time but no date' do
-        pickup_time = "9:00:00"
-        dropoff_time = "1999-12-01 09:00:00"
-        @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
-        expect(@order.errors.messages[:pickup_time]).to include("must be earlier than dropoff time")
-      end
-
-      it 'returns false and errors when pickup time is an integer' do
-        pickup_time = 9
-        dropoff_time = "2015-12-01 09:00:00"
-        @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
-        expect(@order.errors.messages[:order]).to include("must have pickup and dropoff time in the form of 'YYYY-MM-DD HH:MM:SS'")
-      end
-
-      it 'is valid when pickup time does not include seconds' do
-        pickup_time = '2015-12-01 09:00'
-        dropoff_time = "2015-12-01 18:00:00"
-        @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
-        expect(@order.errors.messages).to be_empty
-      end
-
-      it 'is valid when pickup time includes a negative offset from UTC' do
-        pickup_time = '2015-12-01 09:00 -5:00'
-        dropoff_time = '2015-12-01 18:00:00 -5:00'
-        @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
-        expect(@order.errors.messages).to be_empty
-      end
-
-      it 'is valid when pickup time includes a positive offset from UTC' do
-        pickup_time = '2015-12-01 02:00 +12:00'
-        dropoff_time = '2015-12-01 11:00:00 +12:00'
-        @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
-        expect(@order.errors.messages).to be_empty
-      end
-    end
-
     context 'when delivery time is in an invalid range' do
       it 'returns false and errors when pickup time is later than dropoff time' do
         @order.update(pickup: time_to_str(Time.zone.parse('10:00:00')), dropoff: time_to_str(Time.zone.parse('09:00:00')))
@@ -127,6 +75,57 @@ describe Spree::Order do
           dropoff_time = '2000-03-24 18:00'
           @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
           expect(@order.errors.messages).to be_empty
+        end
+
+        context 'when delivery time is in an invalid format' do
+          it 'returns false and errors when pickup month is an invalid month' do
+            pickup_time = "2015-13-01 09:00:00"
+            dropoff_time = "2015-12-01 09:00:00"
+            @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
+            expect(@order.errors.messages[:order]).to include("must have pickup and dropoff time in the form of 'YYYY-MM-DD HH:MM:SS'")
+          end
+
+          it 'returns false and errors when pickup time includes a date but no time' do
+            pickup_time = "2015-13-01"
+            dropoff_time = "2015-12-01 09:00:00"
+            @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
+            expect(@order.errors.messages[:order]).to include("must have pickup and dropoff time in the form of 'YYYY-MM-DD HH:MM:SS'")
+          end
+
+          it 'defaults to todays date when pickup time includes a time but no date' do
+            pickup_time = "9:00:00"
+            dropoff_time = "1999-12-01 09:00:00"
+            @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
+            expect(@order.errors.messages[:pickup_time]).to include("must be earlier than dropoff time")
+          end
+
+          it 'returns false and errors when pickup time is an integer' do
+            pickup_time = 9
+            dropoff_time = "2015-12-01 09:00:00"
+            @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
+            expect(@order.errors.messages[:order]).to include("must have pickup and dropoff time in the form of 'YYYY-MM-DD HH:MM:SS'")
+          end
+
+          it 'is valid when pickup time does not include seconds' do
+            pickup_time = '2015-12-01 09:00'
+            dropoff_time = "2015-12-01 18:00:00"
+            @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
+            expect(@order.errors.messages).to be_empty
+          end
+
+          it 'is valid when pickup time includes a negative offset from UTC' do
+            pickup_time = '2015-12-01 09:00 -5:00'
+            dropoff_time = '2015-12-01 18:00:00 -5:00'
+            @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
+            expect(@order.errors.messages).to be_empty
+          end
+
+          it 'is valid when pickup time includes a positive offset from UTC' do
+            pickup_time = '2015-12-01 02:00 +12:00'
+            dropoff_time = '2015-12-01 11:00:00 +12:00'
+            @order.update_attributes(pickup: pickup_time, dropoff: dropoff_time)
+            expect(@order.errors.messages).to be_empty
+          end
         end
       end
     end

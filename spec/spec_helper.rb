@@ -39,10 +39,6 @@ require 'spree/testing_support/url_helpers'
 # Requires factories defined in lib/spree_delivery_time/factories.rb
 require 'spree_delivery_time/factories'
 
-# Require javascript driver
-require 'capybara/poltergeist'
-Capybara.current_driver = :selenium
-
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
