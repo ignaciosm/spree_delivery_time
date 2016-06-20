@@ -57,25 +57,6 @@ module Spree
       return false unless valid_time_range?
     end
 
-    # Check time string that it is in a valid format and can be parsed by Time.zone
-    # def valid_time_format?(times_arr)
-    #   # byebug
-    #   times_arr.map(&:to_s).each do |time_str|
-    #     # byebug
-    #     if (time_str =~ /\A\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}(:\d{1,2})? (-?\+?\d{4})?$/).nil?
-    #       errors.add(:order, "must have pickup and dropoff time in the form of 'YYYY-MM-DD HH:MM:SS'")
-    #       return false
-    #     end
-
-    #     begin
-    #       Time.zone.parse(time_str)
-    #     rescue ArgumentError => e
-    #       errors.add(:delivery_time, 'must be a valid time and date')
-    #       return false
-    #     end
-    #   end
-    # end
-
     # Check that the pickup time and delivery time are in a valid range
     def valid_time_range?
       # Is pickup time later than dropoff time?
