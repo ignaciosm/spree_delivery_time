@@ -2,8 +2,6 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  pickup:
-  dropoff: "%{pickup_date}"
   shipment_mailer:
     shipped_email:
       pickup: "Pickup is %{pickup_date} between %{pickup_low} and %{pickup_high}"

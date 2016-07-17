@@ -8,12 +8,12 @@ module Spree
 
     def time_high(time_sym)
       return unless [:pickup, :dropoff].include?(time_sym)
-      (send(time_sym) + 1.hour).strftime("%H:%M")
+      (send(time_sym) + 1.hour).strftime("%l:%M %p")
     end
 
     def time_low(time_sym)
       return unless [:pickup, :dropoff].include?(time_sym)
-      send(time_sym).strftime("%H:%M")
+      send(time_sym).strftime("%l:%M %p")
     end
 
     def date_str(time_sym)
